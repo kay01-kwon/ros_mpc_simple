@@ -4,12 +4,15 @@ DoubleIntegralSystem::DoubleIntegralSystem()
 {
     state_initializer();
     nh_.getParam("mass",m_);
+
+    ROS_setup();
 }
 
 DoubleIntegralSystem::DoubleIntegralSystem(double m):
 m_(m)
 {
     state_initializer();
+    ROS_setup();
 }
 
 void DoubleIntegralSystem::publish_state()
@@ -39,7 +42,6 @@ void DoubleIntegralSystem::ROS_setup()
 {
     control_input_subscriber = nh_.subscribe("/input", 1, &DoubleIntegralSystem::callback_control_input, this);
     state_publisher = nh_.advertise<simple_system_state>("/state",1);
-    
 }
 
 void DoubleIntegralSystem::callback_control_input(const simple_system_control_inputConstPtr &u)
