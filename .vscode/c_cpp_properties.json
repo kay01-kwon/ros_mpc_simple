@@ -14,7 +14,7 @@
         "/home/kay/catkin_ws/src/rotors_simulator/rotors_gazebo_plugins/include/**",
         "/home/kay/catkin_ws/src/rotors_simulator/rotors_hil_interface/include/**",
         "/home/kay/catkin_ws/src/rotors_simulator/rotors_joy_interface/include/**",
-        "/home/kay/catkin_ws/src/mpc_test/simple_system/include/**",
+        "/home/kay/catkin_ws/src/mpc_test/simple_system/include/simple_system/**",
         "/usr/include/**"
       ],
       "name": "ROS",
