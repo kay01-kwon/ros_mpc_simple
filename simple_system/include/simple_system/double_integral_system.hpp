@@ -1,6 +1,7 @@
 #ifndef DOUBLE_INTEGRAL_SYSTEM_HPP_
 #define DOUBLE_INTEGRAL_SYSTEM_HPP_
 
+#include <ros/ros.h>
 #include "type_definitions.hpp"
 #include <boost/lambda/lambda.hpp>
 #include <boost/numeric/odeint.hpp>
@@ -17,6 +18,11 @@ class DoubleIntegralSystem{
     DoubleIntegralSystem(double m);
 
     private:
+
+    ros::NodeHandle nh_;
+
+    ros::Subscriber input_subscriber;
+    ros::Publisher state_publisher;
 
     runge_kutta4<mat41_t> rk4;
 
