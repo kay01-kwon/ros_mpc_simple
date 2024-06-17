@@ -2,29 +2,14 @@
 
 DoubleIntegralSystem::DoubleIntegralSystem()
 {
-    m_ = 1;
     state_initializer();
+    nh_.getParam("mass",m_);
 }
 
 DoubleIntegralSystem::DoubleIntegralSystem(double m):
 m_(m)
 {
     state_initializer();
-}
-
-void DoubleIntegralSystem::ROS_setup()
-{
-    control_input_subscriber = nh_.subscribe("/input", 1, &DoubleIntegralSystem::callback_control_input, this);
-    state_publisher = nh_.advertise<simple_system_state>("/state",1);
-    
-}
-
-void DoubleIntegralSystem::callback_control_input(const simple_system_control_inputConstPtr &u)
-{
-    for(int i = 0; i < 2; i++)
-        u_(i) = u->u[i];
-
-
 }
 
 void DoubleIntegralSystem::publish_state()
@@ -40,6 +25,27 @@ void DoubleIntegralSystem::publish_state()
 
     solve();
 
+    simple_system_state published_state_msg;
+
+    published_state_msg.stamp = ros::Time::now();
+
+    for(int i = 0; i < 4; i++)
+        published_state_msg.s[i] = s_(i);
+
+    state_publisher.publish(published_state_msg);
+}
+
+void DoubleIntegralSystem::ROS_setup()
+{
+    control_input_subscriber = nh_.subscribe("/input", 1, &DoubleIntegralSystem::callback_control_input, this);
+    state_publisher = nh_.advertise<simple_system_state>("/state",1);
+    
+}
+
+void DoubleIntegralSystem::callback_control_input(const simple_system_control_inputConstPtr &u)
+{
+    for(int i = 0; i < 2; i++)
+        u_(i) = u->u[i];
 }
 
 void DoubleIntegralSystem::state_initializer()
@@ -55,8 +61,7 @@ void DoubleIntegralSystem::state_initializer()
     B << 0, 0,
         1, 0,
         0, 0,
-        0, 1,
-        0, 0;
+        0, 1;
 
     time_init = true;
 }

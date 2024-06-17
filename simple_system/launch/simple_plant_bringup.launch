@@ -1,0 +1,4 @@
+<launch>
+    <node pkg = "simple_system" type = "simple_system_node" name = "simple_syste"/>
+        <param name = "mass" type = "double" value = "1.0"/>
+</launch>

@@ -21,6 +21,8 @@ class DoubleIntegralSystem{
 
     DoubleIntegralSystem(double m);
 
+    void publish_state();
+
     private:
 
     ros::NodeHandle nh_;
@@ -50,8 +52,6 @@ class DoubleIntegralSystem{
     void ROS_setup();
 
     void callback_control_input(const simple_system_control_inputConstPtr& u);
-
-    void publish_state();
 
     void state_initializer();
 
