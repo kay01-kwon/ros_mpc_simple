@@ -8,8 +8,8 @@ import casadi as cs
 # Initial state
 X0 = np.array([0.0, 0.0, 0.0, 0.0])
 T_horizon = 2.0
-obs_center = np.array([2.0, 2.0])
-r = 1
+obs_center = np.array([2.5, 2.5])
+r = 1+0.3
 
 def create_ocp_solver() -> AcadosOcp:
     # Create ocp object to formulate the OCP
@@ -56,7 +56,7 @@ def create_ocp_solver() -> AcadosOcp:
     ocp.constraints.ubu = np.array([Umax, Umax])
     ocp.constraints.idxbu = np.array([0, 1])
 
-    Kappa = np.array([64.0, 16.0])
+    Kappa = np.array([64.0, 32.0])
     h_expr = get_h(model.x[0:2])
     dhdt_expr = get_dhdt(model.x[0:2],model.x[2:4])
     mu_expr = get_dh2dt2(model.x[0:2],model.x[2:4],model.u)
@@ -69,7 +69,7 @@ def create_ocp_solver() -> AcadosOcp:
     # set options
     ocp.solver_options.qp_solver = "FULL_CONDENSING_HPIPM"  # FULL_CONDENSING_QPOASES
     ocp.solver_options.hessian_approx = "GAUSS_NEWTON"
-    ocp.solver_options.integrator_type = "IRK"
+    ocp.solver_options.integrator_type = "ERK"
     ocp.solver_options.nlp_solver_type = "SQP_RTI"
 
     # set prediction horizon
@@ -160,7 +160,7 @@ def closed_loop_simulation():
 
     plt.figure()
     plt.plot(simX[:,0], simX[:,1], linewidth=4,color='red')
-    Circle = plt.Circle((2,2),r)
+    Circle = plt.Circle((obs_center[0],obs_center[1]),r)
     plt.gca().add_patch(Circle)
     plt.xlabel('x [m]', fontsize=32)
     plt.ylabel('y [m]', fontsize=32)
