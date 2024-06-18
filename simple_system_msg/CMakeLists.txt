@@ -52,6 +52,7 @@ add_message_files(
   FILES
   simple_system_control_input.msg
   simple_system_state.msg
+  simple_system_ref.msg
   # Message2.msg
 )
 
