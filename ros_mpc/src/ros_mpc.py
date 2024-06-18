@@ -52,10 +52,7 @@ class ROS_MPC:
             self.y_ref_N[i] = msg.ref[i]
 
     def state_callback(self,msg):
-        self.state[0] = msg.s[0]
-        self.state[1] = msg.s[2]
-        self.state[2] = msg.s[1]
-        self.state[3] = msg.s[3]
+        self.state[:] = msg.s[:]
         print(self.state)
 
         try:

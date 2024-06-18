@@ -55,14 +55,14 @@ void DoubleIntegralSystem::state_initializer()
     s_.setZero();
     u_.setZero();
 
-    A << 0, 1, 0, 0,
-        0, 0, 0, 0,
+    A << 0, 0, 1, 0,
         0, 0, 0, 1,
+        0, 0, 0, 0,
         0, 0, 0, 0;
     
     B << 0, 0,
-        1, 0,
         0, 0,
+        1, 0,
         0, 1;
 
     time_init = true;
