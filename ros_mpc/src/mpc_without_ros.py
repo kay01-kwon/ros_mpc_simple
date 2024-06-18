@@ -131,10 +131,11 @@ def closed_loop_simulation():
     for i in range(Nsim):
 
         for j in range(N_horizon):
-            acados_ocp_solver.set(j,"y_ref", y_ref)
-        acados_ocp_solver.set(N_horizon, "y_ref", y_ref_N)
+            acados_ocp_solver.set(j,"yref", y_ref)
+        acados_ocp_solver.set(N_horizon, "yref", y_ref_N)
 
         simU[i,:] = acados_ocp_solver.solve_for_x0(xcurrent)
+        print(simU)
         xcurrent = acados_integrator.simulate(xcurrent, simU[i,:])
         simX[i + 1,:] = xcurrent
         h_values[i] = get_h_value(simX[i+1,:])
