@@ -1,9 +1,8 @@
 from acados_template import AcadosOcp, AcadosOcpSolver, AcadosSimSolver
-from model import double_integrator
+from ros_mpc.nodes.model import double_integrator
 import scipy.linalg
 import numpy as np
 import matplotlib.pyplot as plt
-import casadi as cs
 
 # Initial state
 X0 = np.array([0.0, 0.0, 0.0, 0.0])

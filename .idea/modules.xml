@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ros_mpc.iml" filepath="$PROJECT_DIR$/.idea/ros_mpc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mpc_test.iml" filepath="$PROJECT_DIR$/.idea/mpc_test.iml" />
     </modules>
   </component>
 </project>

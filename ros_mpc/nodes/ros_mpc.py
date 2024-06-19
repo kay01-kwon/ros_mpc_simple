@@ -1,9 +1,6 @@
 #!/usr/bin/env python3.8
 import numpy as np
 import rospy
-import os
-import threading
-from model import double_integrator
 from ocp_solver import create_ocp_solver
 from acados_template import AcadosOcpSolver
 from simple_system_msg.msg import simple_system_state
