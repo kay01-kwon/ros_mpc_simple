@@ -49,14 +49,23 @@ class ROS_MPC:
             self.y_ref_N[i] = msg.ref[i]
 
     def state_callback(self,msg):
-        self.state[:] = msg.s[:]
+        for i in range(4):
+            self.state[i] = msg.s[i]
         print(self.state)
 
         try:
+            
+            self.acados_ocp_solver.set(0, "lbx", self.state)
+            self.acados_ocp_solver.set(0, "ubx", self.state)
             for i in range(self.N_horizon):
                 self.acados_ocp_solver.set(i, "y_ref", self.y_ref)
             self.acados_ocp_solver.set(self.N_horizon, "y_ref", self.y_ref_N)
-            U = self.acados_ocp_solver.solve_for_x0(self.state)
+            # U = self.acados_ocp_solver.solve_for_x0(self.state)
+            status = self.acados_ocp_solver.solve()
+            U = self.acados_ocp_solver.get(0,"u")
+
+
+
             for i in range(2):
                 self.control_msg.u[i] = U[i]
             self.input_pub.publish(self.control_msg)
@@ -66,7 +75,7 @@ class ROS_MPC:
 def main():
     rospy.init_node('ROS_MPC', anonymous=True)
     ros_mpc = ROS_MPC()
-    ros_rate = rospy.Rate(60)
+    ros_rate = rospy.Rate(50)
     while not rospy.is_shutdown():
         ros_rate.sleep()
 
