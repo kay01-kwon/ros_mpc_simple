@@ -3,6 +3,7 @@ import numpy as np
 import rospy
 import message_filters
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 from simple_system_msg.msg import simple_system_state, simple_system_control_input
 
 class PlotNode():
@@ -10,6 +11,16 @@ class PlotNode():
         # State and control input to plot
         self.state_msg = np.zeros((4,))
         self.input_msg = np.zeros((2,))
+
+        self.x_data = []
+        self.y_data = []
+
+        self.ux_data = []
+        self.uy_data = []
+
+        fig, ax = plt.subplots()
+
+        self.line1 = ax.plot([],[])
 
         self.ros_setup()
 
@@ -43,8 +54,17 @@ class PlotNode():
         self.input_msg[:] = msg2.u[:]
         # print("state: ", self.state_msg)
         # print("input: ", self.input_msg)
+        self.x_data.append(self.state_msg[0])
+        self.y_data.append(self.state_msg[1])
+
+        if len(self.x_data) > 100:
+            self.x_data.pop(0)
+            self.y_data.pop(0)
 
     def update(self):
+        
+
+
 
 
 if __name__ == '__main__':
