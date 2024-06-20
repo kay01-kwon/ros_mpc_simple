@@ -67,6 +67,7 @@ class ROS_MPC:
 
 
             for i in range(2):
+                self.control_msg.stamp = rospy.Time.now()
                 self.control_msg.u[i] = U[i]
             self.input_pub.publish(self.control_msg)
         except rospy.ROSInterruptException:
