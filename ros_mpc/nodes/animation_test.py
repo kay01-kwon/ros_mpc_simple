@@ -33,3 +33,5 @@ def update(frame):
 
 ani = animation.FuncAnimation(fig=fig, func=update, frames=40, interval=30)
 plt.show()
+
+ani.save('animation.gif', writer='pillow', fps=40)

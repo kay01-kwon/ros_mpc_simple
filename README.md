@@ -44,3 +44,7 @@ message_type: float64[2] ref
 ref[0] = x_ref
 ref[1] = y_ref
 ```
+
+## 3. MPC-ECBF Result
+
+<img src="/figures/real_time_plot.mkv"/>

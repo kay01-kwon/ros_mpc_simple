@@ -7,6 +7,8 @@ from matplotlib import animation
 from matplotlib.animation import FuncAnimation
 from simple_system_msg.msg import simple_system_state, simple_system_control_input
 
+obs_center = np.array([2.5, 2.5])
+r = 1+0.3
 class PlotNode():
     def __init__(self):
         # State and control input to plot
@@ -59,7 +61,7 @@ class PlotNode():
         self.x_data.append(self.state_msg[0])
         self.y_data.append(self.state_msg[1])
 
-        if len(self.x_data) > 50:
+        if len(self.x_data) > 100:
             self.x_data.pop(0)
             self.y_data.pop(0)
 
@@ -72,5 +74,8 @@ if __name__ == '__main__':
     rospy.init_node('plot_node')
     plot_node = PlotNode()
     ani = animation.FuncAnimation(plot_node.fig, plot_node.update, interval=10)
+    Circle = plt.Circle((obs_center[0], obs_center[1]), radius=r)
+    plt.gca().add_artist(Circle)
     plt.show()
+    ani.save('figures/real_time_plot.gif', writer='pillow',fps = 40)
     rospy.spin()
