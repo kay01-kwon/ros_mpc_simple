@@ -47,4 +47,4 @@ ref[1] = y_ref
 
 ## 3. MPC-ECBF Result
 
-<img src="/figures/real_time_plot.mkv"/>
+<img src="/figures/real_time_plot.gif"/>
