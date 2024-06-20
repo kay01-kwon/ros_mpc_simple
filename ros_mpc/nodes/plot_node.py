@@ -3,7 +3,8 @@ import numpy as np
 import rospy
 import message_filters
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+from matplotlib import animation
+from matplotlib.animation import FuncAnimation
 from simple_system_msg.msg import simple_system_state, simple_system_control_input
 
 class PlotNode():
@@ -18,15 +19,18 @@ class PlotNode():
         self.ux_data = []
         self.uy_data = []
 
-        fig, ax = plt.subplots()
+        self.fig, self.ax = plt.subplots()
 
-        self.line1 = ax.plot([],[])
-
-        self.ros_setup()
+        self.line1 = self.ax.plot([],[],label='data')[0]
+        self.ax.set(xlim=[0, 5], ylim=[0, 5])
 
         self.t_curr = 0
         self.t_offset = 0
         self.first_callback = False
+
+        self.ros_setup()
+
+
 
     def ros_setup(self):
         self.state_sub = message_filters.Subscriber('/state', simple_system_state)
@@ -36,8 +40,6 @@ class PlotNode():
                                                               slop = 0.1,
                                                               allow_headerless=True)
         self.ts.registerCallback(self.callback_data)
-        plt.show()
-
 
     def callback_data(self, msg1, msg2):
 
@@ -49,7 +51,7 @@ class PlotNode():
         self.temp_time = rospy.Time.now().to_sec() + rospy.Time.now().to_nsec()*1e-9
         self.t_curr = self.temp_time - self.t_offset
 
-        print("Time: ", self.t_curr)
+        # print("Time: ", self.t_curr)
         self.state_msg[:] = msg1.s[:]
         self.input_msg[:] = msg2.u[:]
         # print("state: ", self.state_msg)
@@ -57,17 +59,18 @@ class PlotNode():
         self.x_data.append(self.state_msg[0])
         self.y_data.append(self.state_msg[1])
 
-        if len(self.x_data) > 100:
+        if len(self.x_data) > 50:
             self.x_data.pop(0)
             self.y_data.pop(0)
 
-    def update(self):
-        
-
-
-
+    def update(self, frame):
+        self.line1.set_xdata(self.x_data[:frame])
+        self.line1.set_ydata(self.y_data[:frame])
+        return self.line1
 
 if __name__ == '__main__':
     rospy.init_node('plot_node')
     plot_node = PlotNode()
+    ani = animation.FuncAnimation(plot_node.fig, plot_node.update, interval=10)
+    plt.show()
     rospy.spin()
